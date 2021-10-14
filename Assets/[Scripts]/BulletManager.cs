@@ -7,14 +7,17 @@ public class BulletManager : MonoBehaviour
 {
     public Queue<GameObject> bulletPool; // QUE used FIFO structure
     public int bulletNumber;
-    public GameObject bulletprefab;
 
+    //referances
+    private BulletFactory factory;
 
     // Start is called before the first frame update
     void Start()
     {
         bulletPool = new Queue<GameObject>(); //creates an empty queue
-        BuildBulletPool();
+        factory = GetComponent<BulletFactory>();//gets referance to bullet factory
+        
+        //BuildBulletPool();
     }
 
 
@@ -30,9 +33,7 @@ public class BulletManager : MonoBehaviour
     }
     private void Addbullet()
     {
-        var temp_bullet = Instantiate(bulletprefab);
-        temp_bullet.SetActive(false);
-        temp_bullet.transform.parent = transform; //sets bullets to spawn under gamecontroller vs in heiarcy
+        var temp_bullet = factory.createBullet();
         bulletPool.Enqueue(temp_bullet);
     }
 
