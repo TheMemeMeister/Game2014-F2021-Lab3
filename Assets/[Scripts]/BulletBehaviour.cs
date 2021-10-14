@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour
 {
+    public BulletType type;
     [Header("Bullet Movement")]
     //variables
     [Range(0.0f, 0.5f)]
@@ -52,13 +53,13 @@ public class BulletBehaviour : MonoBehaviour
         if(transform.position.y < bulletBounds.max)
         {
             //Destroy(this.gameObject);
-            bulletManager.ReturnedBullet(this.gameObject);
+            bulletManager.ReturnedBullet(this.gameObject, type);
         }
         //check top bound
         if (transform.position.y > bulletBounds.min)
         {
             //Destroy(this.gameObject);
-            bulletManager.ReturnedBullet(this.gameObject);
+            bulletManager.ReturnedBullet(this.gameObject, type);
         }
     }
 }

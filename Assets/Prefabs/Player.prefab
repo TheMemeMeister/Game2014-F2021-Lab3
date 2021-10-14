@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalForce: 40
   decayValue: 0.1
+  bulletSpawn: {fileID: 4177732671609460037}
   bounds:
     min: -1.9
     max: 1.9
