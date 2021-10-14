@@ -1,49 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// SINGLETON
+/// </summary>
 [System.Serializable]
 public class BulletManager : MonoBehaviour
 {
-    public Queue<GameObject> enemyBulletPool; // QUE used FIFO structure
-    public Queue<GameObject> playerBulletPool; // QUE used FIFO structure
-    public int enemyBulletNumber;
-    public int playerBulletNumber;
+    private static BulletManager instance = null;
+
+    private BulletManager ()
+    {
+        Initialize();
+    }
+
+    public static BulletManager Instance()
+    {
+        if (instance == null)
+        {
+            instance = new BulletManager();
+        }
+        return instance;
+    }
+
+    public List<Queue<GameObject>> bulletPools;
+
+
 
     //referances
-    private BulletFactory factory;
-
+  
     // Start is called before the first frame update
-    void Start()
+    private void Initialize()
     {
-        enemyBulletPool = new Queue<GameObject>(); //creates an empty queue
-        playerBulletPool = new Queue<GameObject>(); //creates an empty queue
-        factory = GetComponent<BulletFactory>();//gets referance to bullet factory
-        
-        //BuildBulletPool();
+        bulletPools = new List<Queue<GameObject>>();
+
+        //TODO: need to instantiate new queue collections
+        for (int i = 0; i < (int)(BulletType.NUMBER_OF_BULLET_TYPES); i++)
+        {
+            bulletPools.Add(new Queue<GameObject>());
+        }
+     
     }
 
 
  
     private void Addbullet(BulletType type = BulletType.ENEMY)
     {
-        var temp_bullet = factory.createBullet(type);
-        switch (type)
-        {
-            case BulletType.ENEMY:
-
-                enemyBulletPool.Enqueue(temp_bullet);
-                enemyBulletNumber++;
-                break;
-            case BulletType.PLAYER:
-                playerBulletPool.Enqueue(temp_bullet);
-                playerBulletNumber++;
-                break;
-        }
-
-
-        enemyBulletPool.Enqueue(temp_bullet);
-        enemyBulletNumber++;
+        var temp_bullet = BulletFactory.Instance().createBullet(type);
+        bulletPools[(int)type].Enqueue(temp_bullet);
+        
+        
+        
     }
 
     /// <summary>
@@ -55,30 +62,19 @@ public class BulletManager : MonoBehaviour
     public GameObject GetBullet(Vector2 spawn_position, BulletType type = BulletType.ENEMY)
     {
         GameObject temp_bullet = null;
-        switch (type)
-        {
-            case BulletType.ENEMY:
-                if (enemyBulletPool.Count < 1)//nothing in pool
+      
+           
+                if (bulletPools[(int)type].Count < 1)//nothing in pool
                 {
-                    Addbullet();
+                    Addbullet(type);
 
                 }
-                temp_bullet = enemyBulletPool.Dequeue();
+                temp_bullet = bulletPools[(int)type].Dequeue();
+               
+           
                 temp_bullet.transform.position = spawn_position;
                 temp_bullet.SetActive(true);
-                break;
-            case BulletType.PLAYER:
-                Debug.Log("Getting Plyaer Bullet");
-                if (playerBulletPool.Count < 1)//nothing in pool
-                {
-                    Addbullet(BulletType.PLAYER);
-
-                }
-                temp_bullet = playerBulletPool.Dequeue();
-                temp_bullet.transform.position = spawn_position;
-                temp_bullet.SetActive(true);
-                break;
-        }
+              
        
         return temp_bullet;
     }
@@ -89,15 +85,8 @@ public class BulletManager : MonoBehaviour
     public void ReturnedBullet(GameObject returnedBullet, BulletType type = BulletType.ENEMY)
     {
         returnedBullet.SetActive(false);
-        switch (type)
-        {
-            case BulletType.ENEMY:
-                enemyBulletPool.Enqueue(returnedBullet);
-                break;
-            case BulletType.PLAYER:
-                playerBulletPool.Enqueue(returnedBullet);
-                break;
-        }
-      
+        bulletPools[(int)type].Enqueue(returnedBullet);
+
+
     }
 }

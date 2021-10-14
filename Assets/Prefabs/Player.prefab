@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5574551887982003152}
   - component: {fileID: 5574551887982003157}
   - component: {fileID: 8823784678962426453}
+  - component: {fileID: 2996981082216897639}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -153,6 +154,7 @@ MonoBehaviour:
   horizontalForce: 40
   decayValue: 0.1
   bulletSpawn: {fileID: 4177732671609460037}
+  frameDelay: 5
   bounds:
     min: -1.9
     max: 1.9
@@ -194,3 +196,23 @@ PolygonCollider2D:
       - {x: 0.40535033, y: -0.044549465}
       - {x: 0.070871845, y: 0.21010041}
       - {x: 0.020600624, y: 0.29237464}
+--- !u!114 &2996981082216897639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5574551887982003153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa80fed4930ac143a90cb15dabb4198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  speed: 0.127
+  bulletBounds:
+    min: 0
+    max: 0
+  direction: 0
+  bulletVelocity: {x: 0, y: 1, z: 0}
+  type: 0

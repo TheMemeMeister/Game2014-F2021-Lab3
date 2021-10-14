@@ -18,12 +18,12 @@ public class PlayerBehaviour : MonoBehaviour
     //referances
     private Rigidbody2D shiprb;
     public Bounds bounds; //not sure if this is a ref or var
-    private BulletManager bulletManager;
+   
     // Start is called before the first frame update
     void Start()
     {
         shiprb = GetComponent<Rigidbody2D>();
-        bulletManager = GameObject.FindObjectOfType<BulletManager>();
+        //bulletManager = GameObject.FindObjectOfType<BulletManager>();
     }
 
     // Update is called once per frame
@@ -56,7 +56,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if(Time.frameCount % frameDelay == 0 && Input.GetAxisRaw("Jump")> 0)
         {
-            bulletManager.GetBullet(bulletSpawn.position, BulletType.PLAYER);
+            BulletManager.Instance().GetBullet(bulletSpawn.position, BulletType.PLAYER);
         }
     }
 }

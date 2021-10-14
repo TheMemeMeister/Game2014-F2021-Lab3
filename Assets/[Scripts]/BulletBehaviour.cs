@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBehaviour : MonoBehaviour
+public abstract class BulletBehaviour : MonoBehaviour
 {
     public BulletType type;
     [Header("Bullet Movement")]
@@ -12,12 +12,12 @@ public class BulletBehaviour : MonoBehaviour
     public Bounds bulletBounds;
     public BulletDirection direction;
 
-    private BulletManager bulletManager;
-    private Vector3 bulletVelocity;
-    // Start is called before the first frame update
+    //private BulletManager bulletManager;
+    public Vector3 bulletVelocity;
+
     void Start()
     {
-        bulletManager = GameObject.FindObjectOfType<BulletManager>();
+        //bulletManager = GameObject.FindObjectOfType<BulletManager>();
         switch (direction)
         {
             case BulletDirection.UP:
@@ -47,19 +47,19 @@ public class BulletBehaviour : MonoBehaviour
 
         transform.position += bulletVelocity;
     }
-    private void CheckBounds()
+    protected virtual void CheckBounds()
     {
         //check bottom bounds
         if(transform.position.y < bulletBounds.max)
         {
             //Destroy(this.gameObject);
-            bulletManager.ReturnedBullet(this.gameObject, type);
+            BulletManager.Instance().ReturnedBullet(this.gameObject, type);
         }
         //check top bound
         if (transform.position.y > bulletBounds.min)
         {
-            //Destroy(this.gameObject);
-            bulletManager.ReturnedBullet(this.gameObject, type);
+            //Destroy(this.gameObject);S
+            BulletManager.Instance().ReturnedBullet(this.gameObject, type);
         }
     }
 }
